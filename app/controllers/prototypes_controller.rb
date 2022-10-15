@@ -22,7 +22,7 @@ class PrototypesController < ApplicationController
   
   def show
     @comment = Comment.new
-    @comments = @prototype.comments.includes(:user)
+    @comments = @prototype.comments
   end
 
   def edit
@@ -32,7 +32,7 @@ class PrototypesController < ApplicationController
     if @prototype.update(prototype_params)
       redirect_to prototype_path(@prototype)
     else
-     render :edit
+      render :edit
     end
   end
 
@@ -53,5 +53,8 @@ class PrototypesController < ApplicationController
   def set_prototype
     @prototype = Prototype.find(params[:id])
   end
-
+  
+  def contributor_confirmation
+    redirect_to root_path unless current_user == @prototype.user
+  end
 end
